@@ -19,4 +19,4 @@ else
 fi
 
 bashio::log.info "Starting Shairport Sync as '${airplay_name}'..."
-exec shairport-sync -m avahi -a "${airplay_name}" -v
+exec /usr/local/bin/shairport-sync -m avahi -a "${airplay_name}" -v

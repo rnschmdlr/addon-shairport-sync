@@ -1,46 +1,8 @@
 ARG BUILD_FROM=ghcr.io/hassio-addons/base:20.0.1
 # hadolint ignore=DL3006
-FROM ${BUILD_FROM} AS builder
+FROM mikebrady/shairport-sync:latest AS shairport
 
-# Set shell
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-# Install build dependencies
-# hadolint ignore=DL3018
-RUN apk add --no-cache --virtual .build-deps \
-        git \
-        build-base \
-        autoconf \
-        automake \
-        libtool \
-        alsa-lib-dev \
-        pulseaudio-dev \
-        popt-dev \
-        openssl-dev \
-        soxr-dev \
-        avahi-dev \
-        libconfig-dev \
-        xxd \
-        ffmpeg-dev \
- && cd /tmp \
- && git clone --depth 1 https://github.com/mikebrady/shairport-sync.git \
- && cd shairport-sync \
- && autoreconf -fi \
- && ./configure \
-        --prefix=/usr \
-        --sysconfdir=/etc \
-        --with-alsa \
-        --with-pa \
-        --with-pipe \
-        --with-avahi \
-        --with-ssl=openssl \
-        --with-soxr \
-        --with-metadata \
-        --with-ffmpeg \
- && make \
- && make install DESTDIR=/tmp/shairport-install
-
-# Runtime stage
+# Runtime stage with HA base
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -56,11 +18,18 @@ RUN apk add --no-cache \
         soxr \
         avahi \
         libconfig \
-        ffmpeg-libs
+        ffmpeg-libs \
+        libplist \
+        libsodium \
+        libgcrypt \
+        libuuid
 
-# Copy shairport-sync binary and config from builder
-COPY --from=builder /tmp/shairport-install/usr/bin/shairport-sync /usr/bin/shairport-sync
-COPY --from=builder /tmp/shairport-install/etc/shairport-sync.conf /etc/shairport-sync.conf
+# Copy shairport-sync binary and config from official image
+COPY --from=shairport /usr/local/bin/shairport-sync /usr/local/bin/shairport-sync
+COPY --from=shairport /usr/local/etc/shairport-sync.conf /etc/shairport-sync.conf
+
+# Copy NQPTP if it exists in the official image (needed for AirPlay 2)
+COPY --from=shairport /usr/local/bin/nqptp /usr/local/bin/nqptp
 
 # Copy root filesystem
 COPY rootfs /
