@@ -53,6 +53,7 @@ FROM ${BUILD_FROM}
 # hadolint ignore=DL3018
 RUN apk add --no-cache \
         alsa-lib \
+        alsa-plugins-pulse \
         avahi \
         dbus \
         glib \
