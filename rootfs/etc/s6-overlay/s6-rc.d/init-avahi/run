@@ -1,9 +1,9 @@
-#!/usr/bin/with-contenv bashio
+#!/command/with-contenv bashio
+# shellcheck shell=bash
 # ==============================================================================
-# Community bashio::io Add-ons: Homebridge
+# Home Assistant Addon: Shairport Sync
 # Configures the Avahi daemon
 # ==============================================================================
-# shellcheck disable=SC1091
 
 readonly AVAHI_CONFIG='/etc/avahi/avahi-daemon.conf'
 declare interfaces
@@ -47,3 +47,8 @@ fi
 
 # Remove some problematic Avahi service files
 rm -f /etc/avahi/services/*
+
+# Create Avahi run directory
+mkdir -p /var/run/avahi-daemon
+
+bashio::log.info "Avahi daemon configured."

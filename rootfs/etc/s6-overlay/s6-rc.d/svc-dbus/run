@@ -1,0 +1,9 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Addon: Shairport Sync
+# Starts the D-Bus daemon
+# ==============================================================================
+
+bashio::log.info "Starting D-Bus daemon..."
+exec dbus-daemon --system --nofork

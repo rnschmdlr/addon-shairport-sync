@@ -1,8 +1,10 @@
-#!/usr/bin/with-contenv bashio
+#!/command/with-contenv bashio
+# shellcheck shell=bash
 # ==============================================================================
-# Community Hass.io Add-ons: Homebridge
-# Ensures we've got an unique D-Bus ID
+# Home Assistant Addon: Shairport Sync
+# Ensures we have a unique D-Bus ID
 # ==============================================================================
-# shellcheck disable=SC1091
 
+bashio::log.info "Generating D-Bus UUID..."
 dbus-uuidgen --ensure || bashio::exit.nok 'Failed to generate a unique D-Bus ID'
+mkdir -p /var/run/dbus

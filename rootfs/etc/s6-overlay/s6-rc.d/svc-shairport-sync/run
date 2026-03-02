@@ -1,24 +1,22 @@
-#!/usr/bin/with-contenv bashio
+#!/command/with-contenv bashio
+# shellcheck shell=bash
 # ==============================================================================
-# Community Hass.io Add-ons: Shairport Sync
+# Home Assistant Addon: Shairport Sync
 # Starts the Shairport Sync service
 # ==============================================================================
-# shellcheck disable=SC1091
-
-
-# Wait for Avahi to become available
-s6-svwait -u -t 5000 /var/run/s6/services/avahi
-
-# Wait at least 5 seconds before starting
-# Avahi might need some time.
-sleep 5
 
 declare airplay_name
 
+# Wait for Avahi to become available
+bashio::log.info "Waiting for Avahi to be ready..."
+sleep 3
+
+# Determine AirPlay device name
 if bashio::config.has_value 'airplay_name'; then
     airplay_name=$(bashio::config 'airplay_name')
 else
     airplay_name=$(bashio::info.hostname)
 fi
 
-exec shairport-sync -m avahi -a "$airplay_name"
+bashio::log.info "Starting Shairport Sync as '${airplay_name}'..."
+exec shairport-sync -m avahi -a "${airplay_name}" --log-to-stderr
