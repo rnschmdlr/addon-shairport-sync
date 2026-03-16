@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2
+
+- Fix Docker build failure: build `plistutil` from source (not packaged as standalone binary on Alpine Linux, required for AirPlay 2 configure check)
+
 ## 1.1.1
 
 - Add `volume_control_profile` option (`dasl_tapered` / `standard` / `flat`)

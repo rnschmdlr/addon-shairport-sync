@@ -26,8 +26,20 @@ RUN apk add --no-cache --virtual .build-deps \
         popt-dev \
         pulseaudio-dev \
         soxr-dev \
-        xxd \
- && cd /tmp \
+        xxd
+
+# Build plistutil from source — required for AirPlay 2 configure check;
+# not shipped as a standalone binary in Alpine's libplist packages.
+# hadolint ignore=DL3003
+RUN cd /tmp \
+ && git clone --depth 1 https://github.com/libimobiledevice/libplist.git \
+ && cd libplist \
+ && autoreconf -fi \
+ && ./configure --without-cython \
+ && make -j $(nproc) \
+ && install -m 755 src/plistutil /usr/local/bin/plistutil
+
+RUN cd /tmp \
  && git clone --branch 5.0.1 --depth 1 https://github.com/mikebrady/shairport-sync.git \
  && cd shairport-sync \
  && autoreconf -fi \
