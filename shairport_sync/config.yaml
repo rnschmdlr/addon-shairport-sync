@@ -2,8 +2,8 @@
 name: Shairport Sync
 version: 1.1.0
 slug: shairport_sync
-description: AirPlay and AirPlay 2 audio receiver for Home Assistant
-url: https://github.com/WangChuDi/addon-shairport-sync
+description: AirPlay audio receiver for Home Assistant
+url: https://github.com/rnschmdlr/addon-shairport-sync
 startup: application
 init: false
 arch:
@@ -19,14 +19,16 @@ map:
   - config:rw
 options:
   log_level: info
+  log_verbosity: 1
   avahi_interfaces: ""
   avahi_hostname: ""
   avahi_domainname: local
   airplay_name: Home Assistant
   enable_ipv6: false
   interpolation: soxr
-  alsa_output_device: ""
+  volume_control_profile: dasl_tapered
   audio_backend_buffer_desired_length_in_seconds: 0.5
+  allow_session_interruption: yes
   mqtt_enabled: false
   mqtt_hostname: core-mosquitto
   mqtt_port: 1883
@@ -35,14 +37,16 @@ options:
   mqtt_password: ""
 schema:
   log_level: list(trace|debug|info|notice|warning|error|fatal)
+  log_verbosity: int
   avahi_interfaces: str?
   avahi_hostname: str?
   avahi_domainname: str
   airplay_name: str
   enable_ipv6: bool
-  interpolation: list(auto|basic|soxr)
-  alsa_output_device: str?
+  interpolation: list(auto|basic|vernier|soxr)
+  volume_control_profile: list(dasl_tapered|flat|standard)
   audio_backend_buffer_desired_length_in_seconds: float
+  allow_session_interruption: list(yes|no)
   mqtt_enabled: bool
   mqtt_hostname: str
   mqtt_port: int

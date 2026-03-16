@@ -33,7 +33,7 @@ else
 
         printf 'sessioncontrol = {\n'
         printf '  allow_session_interruption = "yes";\n'
-        printf '  session_timeout = 20;\n'
+        printf '  session_timeout = 120;\n'
         printf '};\n\n'
 
         printf 'alsa = {\n'
