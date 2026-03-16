@@ -68,13 +68,12 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Start nqptp for AirPlay 2 support (daemonises itself)
+# Wait for Avahi to be fully ready (socket appears after daemon initialises)
 # ---------------------------------------------------------------------------
-if command -v nqptp > /dev/null 2>&1; then
-    bashio::log.info "Starting nqptp for AirPlay 2..."
-    nqptp &
-    sleep 1
-fi
+bashio::log.info "Waiting for Avahi to be ready..."
+until [[ -S /var/run/avahi-daemon/socket ]]; do
+    sleep 0.5
+done
 
 # ---------------------------------------------------------------------------
 # Start Shairport Sync

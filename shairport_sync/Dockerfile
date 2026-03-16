@@ -43,20 +43,13 @@ RUN apk add --no-cache --virtual .build-deps \
         --with-soxr \
         --with-metadata \
         --with-mqtt-client \
-        --with-airplay2 \
+        --with-airplay-2 \
         --with-stdout \
  && make -j $(nproc) \
  && make install DESTDIR=/tmp/shairport-install
 
 # Build nqptp (required for AirPlay 2)
-# hadolint ignore=DL3018
-RUN apk add --no-cache --virtual .nqptp-build-deps \
-        git \
-        build-base \
-        autoconf \
-        automake \
-        libtool \
- && cd /tmp \
+RUN cd /tmp \
  && git clone --branch 1.2.6 --depth 1 https://github.com/mikebrady/nqptp.git \
  && cd nqptp \
  && autoreconf -fi \

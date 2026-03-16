@@ -1,0 +1,9 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Addon: Shairport Sync
+# Starts the nqptp daemon (required for AirPlay 2)
+# ==============================================================================
+
+bashio::log.info "Starting nqptp..."
+exec nqptp
