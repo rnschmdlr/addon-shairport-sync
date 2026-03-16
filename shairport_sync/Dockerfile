@@ -56,7 +56,6 @@ RUN cd /tmp \
         --with-metadata \
         --with-mqtt-client \
         --with-airplay-2 \
-        --with-apple-alac \
         --with-stdout \
  && make -j $(nproc) \
  && make install DESTDIR=/tmp/shairport-install

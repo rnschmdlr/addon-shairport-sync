@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.6
+
+- Remove `--with-apple-alac` build flag — deprecated and superseded by the FFmpeg ALAC decoder already included for AirPlay 2
+
 ## 1.1.5
 
 - Fix build: add `ffmpeg-dev` / `ffmpeg-libs` — AirPlay 2 requires `libavutil` from FFmpeg
