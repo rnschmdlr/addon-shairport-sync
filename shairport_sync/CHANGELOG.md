@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4
+
+- Fix plistutil build: binary is at `tools/plistutil` not `src/plistutil`; use `autogen.sh` with `--with-tools` flag
+
 ## 1.1.3
 
 - Pre-build Docker images via GitHub Actions and push to ghcr.io — eliminates on-device compilation, preventing install timeouts and crashes on Raspberry Pi

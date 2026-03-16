@@ -34,10 +34,9 @@ RUN apk add --no-cache --virtual .build-deps \
 RUN cd /tmp \
  && git clone --depth 1 https://github.com/libimobiledevice/libplist.git \
  && cd libplist \
- && autoreconf -fi \
- && ./configure --without-cython \
+ && ./autogen.sh --without-cython --with-tools \
  && make -j $(nproc) \
- && install -m 755 src/plistutil /usr/local/bin/plistutil
+ && install -m 755 tools/plistutil /usr/local/bin/plistutil
 
 RUN cd /tmp \
  && git clone --branch 5.0.1 --depth 1 https://github.com/mikebrady/shairport-sync.git \
