@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.7
+
+- Add `NET_ADMIN` capability — required for nqptp PTP multicast operations (AirPlay 2 timing sync)
+- Wait for nqptp socket (`/tmp/nqptp`) before starting shairport-sync to eliminate startup race condition
+
 ## 1.1.6
 
 - Remove `--with-apple-alac` build flag — deprecated and superseded by the FFmpeg ALAC decoder already included for AirPlay 2

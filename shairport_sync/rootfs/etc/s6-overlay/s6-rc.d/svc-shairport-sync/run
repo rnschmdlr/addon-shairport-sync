@@ -68,6 +68,14 @@ until [[ -S /var/run/avahi-daemon/socket ]]; do
 done
 
 # ---------------------------------------------------------------------------
+# Wait for nqptp to be ready (creates /tmp/nqptp socket when initialised)
+# ---------------------------------------------------------------------------
+bashio::log.info "Waiting for nqptp to be ready..."
+until [[ -S /tmp/nqptp ]]; do
+    sleep 0.5
+done
+
+# ---------------------------------------------------------------------------
 # Start Shairport Sync
 # ---------------------------------------------------------------------------
 bashio::log.info "Starting Shairport Sync..."
