@@ -38,37 +38,23 @@ HACS integration can display a full media-player entity.
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `log_level` | `info` | Log verbosity: `trace` `debug` `info` `notice` `warning` `error` `fatal` |
+| `log_level` | `info` | HA log verbosity: `trace` `debug` `info` `notice` `warning` `error` `fatal` |
+| `log_verbosity` | `1` | shairport-sync internal log verbosity (0 = quiet, 1 = normal, 2 = verbose) |
 | `airplay_name` | `Home Assistant` | Name shown on AirPlay device lists |
 | `avahi_interfaces` | *(auto)* | Network interface for Avahi; leave empty to auto-detect |
 | `avahi_hostname` | *(auto)* | Avahi hostname; leave empty to use the system hostname |
 | `avahi_domainname` | `local` | mDNS domain |
 | `enable_ipv6` | `false` | Enable IPv6 |
-| `interpolation` | `soxr` | Sample-rate conversion quality: `auto` `basic` `soxr` |
-| `alsa_output_device` | *(default)* | ALSA device to output to, e.g. `hw:CARD=PO100,DEV=0`. Leave empty to use the HA audio system (PulseAudio). |
+| `interpolation` | `soxr` | Sample-rate conversion quality: `auto` `basic` `vernier` `soxr` |
+| `volume_control_profile` | `dasl_tapered` | Volume curve: `dasl_tapered` (natural-sounding), `standard`, `flat` |
 | `audio_backend_buffer_desired_length_in_seconds` | `0.5` | Audio buffer size in seconds. Increase (e.g. `1.0`) if you hear dropouts or underruns. |
+| `allow_session_interruption` | `yes` | Whether a new AirPlay source can take over mid-playback: `yes` or `no` |
 | `mqtt_enabled` | `false` | Enable MQTT metadata publishing |
 | `mqtt_hostname` | `core-mosquitto` | MQTT broker hostname (`core-mosquitto` for the Mosquitto add-on) |
 | `mqtt_port` | `1883` | MQTT broker port |
 | `mqtt_topic` | `shairport-sync` | MQTT topic prefix. Must match the topic configured in hass-shairport-sync. |
 | `mqtt_username` | *(none)* | MQTT username (if broker requires authentication) |
 | `mqtt_password` | *(none)* | MQTT password |
-
-## Finding your USB audio device name
-
-If you use a USB S/PDIF adapter (e.g. SMSL PO100), find its ALSA name by running
-this command in the **Terminal & SSH** add-on:
-
-```bash
-aplay -l
-```
-
-Look for a line like `card 1: PO100 [SMSL PO100], device 0` and set
-`alsa_output_device` to `hw:CARD=PO100,DEV=0`.
-
-If `alsa_output_device` is left empty, audio is routed through the HA audio
-system (PulseAudio), which also works and allows device selection via the
-system audio settings.
 
 ## MQTT / hass-shairport-sync setup
 
@@ -103,6 +89,6 @@ macOS 10.15+ on the sending device.
 
 [aarch64-shield]: https://img.shields.io/badge/architecture-aarch64-blue.svg
 [amd64-shield]: https://img.shields.io/badge/architecture-amd64-blue.svg
-[license-shield]: https://img.shields.io/github/license/WangChuDi/addon-shairport-sync.svg
-[releases-shield]: https://img.shields.io/github/release/WangChuDi/addon-shairport-sync.svg
-[releases]: https://github.com/WangChuDi/addon-shairport-sync/releases
+[license-shield]: https://img.shields.io/github/license/rnschmdlr/addon-shairport-sync.svg
+[releases-shield]: https://img.shields.io/github/release/rnschmdlr/addon-shairport-sync.svg
+[releases]: https://github.com/rnschmdlr/addon-shairport-sync/releases

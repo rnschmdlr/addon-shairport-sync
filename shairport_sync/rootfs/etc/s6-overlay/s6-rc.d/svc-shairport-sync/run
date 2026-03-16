@@ -17,30 +17,22 @@ if [[ -f "${USER_CONFIG}" ]]; then
 else
     bashio::log.info "Generating config from add-on options..."
 
-    declare airplay_name
-    declare interpolation
-    declare buffer
-
-    airplay_name=$(bashio::config 'airplay_name')
-    interpolation=$(bashio::config 'interpolation')
-    buffer=$(bashio::config 'audio_backend_buffer_desired_length_in_seconds')
-
     {
         printf 'general = {\n'
-        printf '  name = "%s";\n' "${airplay_name}"
-        printf '  interpolation = "%s";\n' "${interpolation}"
+        printf '  name = "%s";\n' "$(bashio::config 'airplay_name')"
+        printf '  interpolation = "%s";\n' "$(bashio::config 'interpolation')"
+        printf '  volume_control_profile = "%s";\n' "$(bashio::config 'volume_control_profile')"
+        printf '  log_verbosity = %s;\n' "$(bashio::config 'log_verbosity')"
         printf '};\n\n'
 
         printf 'sessioncontrol = {\n'
-        printf '  allow_session_interruption = "yes";\n'
+        printf '  allow_session_interruption = "%s";\n' "$(bashio::config 'allow_session_interruption')"
         printf '  session_timeout = 120;\n'
         printf '};\n\n'
 
         printf 'alsa = {\n'
-        if bashio::config.has_value 'alsa_output_device'; then
-            printf '  output_device = "%s";\n' "$(bashio::config 'alsa_output_device')"
-        fi
-        printf '  audio_backend_buffer_desired_length_in_seconds = %s;\n' "${buffer}"
+        printf '  audio_backend_buffer_desired_length_in_seconds = %s;\n' \
+            "$(bashio::config 'audio_backend_buffer_desired_length_in_seconds')"
         printf '};\n\n'
 
         printf 'metadata = {\n'

@@ -1,6 +1,6 @@
 ---
 name: Shairport Sync
-version: 1.1.0
+version: 1.1.1
 slug: shairport_sync
 description: AirPlay audio receiver for Home Assistant
 url: https://github.com/rnschmdlr/addon-shairport-sync
