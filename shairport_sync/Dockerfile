@@ -19,6 +19,7 @@ RUN apk add --no-cache --virtual .build-deps \
         dbus \
         libconfig-dev \
         libgcrypt-dev \
+        ffmpeg-dev \
         libplist-dev \
         libsodium-dev \
         mosquitto-dev \
@@ -80,6 +81,7 @@ RUN apk add --no-cache \
         alsa-plugins-pulse \
         avahi \
         dbus \
+        ffmpeg-libs \
         glib \
         libconfig \
         libgcrypt \

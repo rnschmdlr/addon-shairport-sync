@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.5
+
+- Fix build: add `ffmpeg-dev` / `ffmpeg-libs` — AirPlay 2 requires `libavutil` from FFmpeg
+
 ## 1.1.4
 
 - Fix plistutil build: binary is at `tools/plistutil` not `src/plistutil`; use `autogen.sh` with `--with-tools` flag
