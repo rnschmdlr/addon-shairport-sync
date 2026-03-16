@@ -27,6 +27,13 @@ HACS integration can display a full media-player entity.
 4. Configure the add-on options (see below).
 5. Start the add-on.
 
+> **Note:** During installation you may see a Supervisor warning about the
+> observer plugin (`Watchdog/Application found a problem with observer plugin`)
+> and a brief HA restart. This is a known Home Assistant Supervisor bug
+> triggered when any add-on is installed that causes the host to restart — it
+> is not caused by this add-on. The add-on will install successfully despite
+> the message.
+
 ## Configuration options
 
 | Option | Default | Description |
