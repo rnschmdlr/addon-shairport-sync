@@ -16,7 +16,6 @@ host_network: true
 audio: true
 privileged:
   - SYS_NICE
-  - NET_BIND_SERVICE
 map:
   - config:rw
 options:
