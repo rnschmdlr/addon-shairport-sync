@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.3
+
+- Pre-build Docker images via GitHub Actions and push to ghcr.io — eliminates on-device compilation, preventing install timeouts and crashes on Raspberry Pi
+
 ## 1.1.2
 
 - Fix Docker build failure: build `plistutil` from source (not packaged as standalone binary on Alpine Linux, required for AirPlay 2 configure check)
