@@ -82,8 +82,8 @@ for the full configuration reference.
 ## AirPlay 2 notes
 
 AirPlay 2 requires the **nqptp** timing daemon, which is built into this
-add-on and starts automatically. nqptp uses PTP ports 319/320 (UDP); the
-add-on requests `NET_BIND_SERVICE` to allow this. Requires iOS 11.4+ or
+add-on and starts automatically. nqptp uses PTP ports 319/320 (UDP); 
+Requires iOS 11.4+ or
 macOS 10.15+ on the sending device.
 
 ## Technical details
