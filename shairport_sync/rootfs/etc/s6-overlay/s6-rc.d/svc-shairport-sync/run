@@ -5,18 +5,79 @@
 # Starts the Shairport Sync service
 # ==============================================================================
 
-declare airplay_name
+declare CONFIG_FILE=/tmp/shairport-sync.conf
+declare USER_CONFIG=/config/shairport-sync.conf
 
-# Wait for Avahi to become available
-bashio::log.info "Waiting for Avahi to be ready..."
-sleep 3
-
-# Determine AirPlay device name
-if bashio::config.has_value 'airplay_name'; then
-    airplay_name=$(bashio::config 'airplay_name')
+# ---------------------------------------------------------------------------
+# Config file: use the user's file if present, otherwise generate from options
+# ---------------------------------------------------------------------------
+if [[ -f "${USER_CONFIG}" ]]; then
+    bashio::log.info "Using custom config from ${USER_CONFIG}"
+    cp "${USER_CONFIG}" "${CONFIG_FILE}"
 else
-    airplay_name=$(bashio::info.hostname)
+    bashio::log.info "Generating config from add-on options..."
+
+    declare airplay_name
+    declare interpolation
+    declare buffer
+
+    airplay_name=$(bashio::config 'airplay_name')
+    interpolation=$(bashio::config 'interpolation')
+    buffer=$(bashio::config 'audio_backend_buffer_desired_length_in_seconds')
+
+    {
+        printf 'general = {\n'
+        printf '  name = "%s";\n' "${airplay_name}"
+        printf '  interpolation = "%s";\n' "${interpolation}"
+        printf '};\n\n'
+
+        printf 'sessioncontrol = {\n'
+        printf '  allow_session_interruption = "yes";\n'
+        printf '  session_timeout = 20;\n'
+        printf '};\n\n'
+
+        printf 'alsa = {\n'
+        if bashio::config.has_value 'alsa_output_device'; then
+            printf '  output_device = "%s";\n' "$(bashio::config 'alsa_output_device')"
+        fi
+        printf '  audio_backend_buffer_desired_length_in_seconds = %s;\n' "${buffer}"
+        printf '};\n\n'
+
+        printf 'metadata = {\n'
+        printf '  enabled = "yes";\n'
+        printf '  include_cover_art = "yes";\n'
+        printf '};\n'
+
+        if bashio::config.true 'mqtt_enabled'; then
+            printf '\nmqtt = {\n'
+            printf '  enabled = "yes";\n'
+            printf '  hostname = "%s";\n' "$(bashio::config 'mqtt_hostname')"
+            printf '  port = %s;\n' "$(bashio::config 'mqtt_port')"
+            printf '  topic = "%s";\n' "$(bashio::config 'mqtt_topic')"
+            printf '  publish_parsed_metadata = "yes";\n'
+            printf '  publish_cover_art = "yes";\n'
+            if bashio::config.has_value 'mqtt_username'; then
+                printf '  username = "%s";\n' "$(bashio::config 'mqtt_username')"
+            fi
+            if bashio::config.has_value 'mqtt_password'; then
+                printf '  password = "%s";\n' "$(bashio::config 'mqtt_password')"
+            fi
+            printf '};\n'
+        fi
+    } > "${CONFIG_FILE}"
 fi
 
-bashio::log.info "Starting Shairport Sync as '${airplay_name}'..."
-exec shairport-sync -m avahi -a "${airplay_name}" -v
+# ---------------------------------------------------------------------------
+# Start nqptp for AirPlay 2 support (daemonises itself)
+# ---------------------------------------------------------------------------
+if command -v nqptp > /dev/null 2>&1; then
+    bashio::log.info "Starting nqptp for AirPlay 2..."
+    nqptp &
+    sleep 1
+fi
+
+# ---------------------------------------------------------------------------
+# Start Shairport Sync
+# ---------------------------------------------------------------------------
+bashio::log.info "Starting Shairport Sync..."
+exec shairport-sync -c "${CONFIG_FILE}"

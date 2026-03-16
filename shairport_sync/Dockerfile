@@ -5,7 +5,7 @@ FROM ${BUILD_FROM} AS builder
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Install build dependencies (based on official shairport-sync Dockerfile)
+# Install build dependencies
 # hadolint ignore=DL3018
 RUN apk add --no-cache --virtual .build-deps \
         git \
@@ -21,13 +21,14 @@ RUN apk add --no-cache --virtual .build-deps \
         libgcrypt-dev \
         libplist-dev \
         libsodium-dev \
+        mosquitto-dev \
         openssl-dev \
         popt-dev \
         pulseaudio-dev \
         soxr-dev \
         xxd \
  && cd /tmp \
- && git clone --depth 1 https://github.com/mikebrady/shairport-sync.git \
+ && git clone --branch 5.0.1 --depth 1 https://github.com/mikebrady/shairport-sync.git \
  && cd shairport-sync \
  && autoreconf -fi \
  && mkdir build && cd build \
@@ -41,15 +42,33 @@ RUN apk add --no-cache --virtual .build-deps \
         --with-ssl=openssl \
         --with-soxr \
         --with-metadata \
+        --with-mqtt-client \
+        --with-airplay2 \
         --with-stdout \
  && make -j $(nproc) \
  && make install DESTDIR=/tmp/shairport-install
+
+# Build nqptp (required for AirPlay 2)
+# hadolint ignore=DL3018
+RUN apk add --no-cache --virtual .nqptp-build-deps \
+        git \
+        build-base \
+        autoconf \
+        automake \
+        libtool \
+ && cd /tmp \
+ && git clone --branch 1.2.6 --depth 1 https://github.com/mikebrady/nqptp.git \
+ && cd nqptp \
+ && autoreconf -fi \
+ && ./configure \
+ && make -j $(nproc) \
+ && cp nqptp /tmp/shairport-install/usr/bin/nqptp
 
 # Runtime stage
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
-# Install runtime dependencies (matching official shairport-sync image)
+# Install runtime dependencies
 # hadolint ignore=DL3018
 RUN apk add --no-cache \
         alsa-lib \
@@ -64,11 +83,13 @@ RUN apk add --no-cache \
         libcrypto3 \
         libsodium \
         libuuid \
+        mosquitto-libs \
         popt \
         soxr
 
-# Copy shairport-sync binary and config from builder
+# Copy shairport-sync, nqptp, and default config from builder
 COPY --from=builder /tmp/shairport-install/usr/bin/shairport-sync /usr/bin/shairport-sync
+COPY --from=builder /tmp/shairport-install/usr/bin/nqptp /usr/bin/nqptp
 COPY --from=builder /tmp/shairport-install/etc/shairport-sync.conf /etc/shairport-sync.conf
 
 # Copy root filesystem
