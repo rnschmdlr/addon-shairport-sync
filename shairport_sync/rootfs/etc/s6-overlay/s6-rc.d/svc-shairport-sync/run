@@ -23,6 +23,10 @@ else
         printf '  interpolation = "%s";\n' "$(bashio::config 'interpolation')"
         printf '  volume_control_profile = "%s";\n' "$(bashio::config 'volume_control_profile')"
         printf '  log_verbosity = %s;\n' "$(bashio::config 'log_verbosity')"
+        printf '  audio_decoded_buffer_desired_length_in_seconds = %s;\n' \
+            "$(bashio::config 'audio_decoded_buffer_desired_length_in_seconds')"
+        printf '  resync_threshold_in_seconds = %s;\n' \
+            "$(bashio::config 'resync_threshold_in_seconds')"
         printf '};\n\n'
 
         printf 'sessioncontrol = {\n'

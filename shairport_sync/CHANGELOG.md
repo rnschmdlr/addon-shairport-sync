@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1
+
+- Fix AirPlay 2 clock discipline crash ("Gone past starting time"): increase `audio_decoded_buffer_desired_length_in_seconds` default to 3.0 s (from 1.0 s) to absorb PTP clock convergence latency, and raise `resync_threshold_in_seconds` default to 0.2 s (from 0.05 s) to prevent perpetual resync on the first frames — both values are now exposed as UI options
+
 ## 1.2.0
 
 - Fix AirPlay 2 capability handshake (`generateInfoPlist plist not created`): replace custom libplist source build with Alpine's `libplist-util` 2.6.0 package — version mismatch between git-master plistutil and the 2.6.0 runtime library caused `plist_from_memory()` to fail on every connection, producing an empty capabilities response and preventing any AirPlay session from establishing

@@ -1,6 +1,6 @@
 ---
 name: Shairport Sync
-version: 1.2.0
+version: 1.2.1
 slug: shairport_sync
 image: ghcr.io/rnschmdlr/addon-shairport-sync/{arch}
 description: AirPlay audio receiver for Home Assistant
@@ -30,6 +30,8 @@ options:
   interpolation: soxr
   volume_control_profile: dasl_tapered
   audio_backend_buffer_desired_length_in_seconds: 0.5
+  audio_decoded_buffer_desired_length_in_seconds: 3.0
+  resync_threshold_in_seconds: 0.2
   allow_session_interruption: yes
   mqtt_enabled: false
   mqtt_hostname: core-mosquitto
@@ -48,6 +50,8 @@ schema:
   interpolation: list(auto|basic|vernier|soxr)
   volume_control_profile: list(dasl_tapered|flat|standard)
   audio_backend_buffer_desired_length_in_seconds: float
+  audio_decoded_buffer_desired_length_in_seconds: float
+  resync_threshold_in_seconds: float
   allow_session_interruption: list(yes|no)
   mqtt_enabled: bool
   mqtt_hostname: str
