@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0
+
+- Fix AirPlay 2 capability handshake (`generateInfoPlist plist not created`): replace custom libplist source build with Alpine's `libplist-util` 2.6.0 package — version mismatch between git-master plistutil and the 2.6.0 runtime library caused `plist_from_memory()` to fail on every connection, producing an empty capabilities response and preventing any AirPlay session from establishing
+
 ## 1.1.9
 
 - Fix nqptp readiness check: nqptp uses POSIX shared memory (`/dev/shm/nqptp`), not a Unix socket — the wrong path caused shairport-sync to hang indefinitely waiting for nqptp, which is why AirPlay 2 never announced itself and the finish script timed out
