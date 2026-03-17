@@ -34,7 +34,7 @@ else
         printf '  session_timeout = 120;\n'
         printf '};\n\n'
 
-        printf 'alsa = {\n'
+        printf 'pa = {\n'
         printf '  audio_backend_buffer_desired_length_in_seconds = %s;\n' \
             "$(bashio::config 'audio_backend_buffer_desired_length_in_seconds')"
         printf '};\n\n'

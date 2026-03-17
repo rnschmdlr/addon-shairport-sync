@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2
+
+- Fix ALSA XRUN loop: switch audio backend from ALSA (routed through alsa-plugins-pulse) to the native PulseAudio backend — the double-buffering through alsa-plugins-pulse caused the CPU scheduler to miss write windows on a loaded Pi 4, producing "SND_PCM_STATE_XRUN prior to writing" → resync → repeat
+
 ## 1.2.1
 
 - Fix AirPlay 2 clock discipline crash ("Gone past starting time"): increase `audio_decoded_buffer_desired_length_in_seconds` default to 3.0 s (from 1.0 s) to absorb PTP clock convergence latency, and raise `resync_threshold_in_seconds` default to 0.2 s (from 0.05 s) to prevent perpetual resync on the first frames — both values are now exposed as UI options
