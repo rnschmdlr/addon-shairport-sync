@@ -48,7 +48,9 @@ fi
 # Remove some problematic Avahi service files
 rm -f /etc/avahi/services/*
 
-# Create Avahi run directory
+# Create Avahi run directory and clean up any stale PID/socket from a previous ungraceful shutdown
 mkdir -p /var/run/avahi-daemon
+rm -f /var/run/avahi-daemon/pid
+rm -f /var/run/avahi-daemon/socket
 
 bashio::log.info "Avahi daemon configured."

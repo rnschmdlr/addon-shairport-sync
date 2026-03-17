@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.8
+
+- Fix restart loop: clean up stale `/run/dbus/dbus.pid` in `init-dbus` before starting D-Bus — an ungraceful shutdown (finish script SIGKILL) left this file behind, causing D-Bus to refuse to start on the next attempt, taking down Avahi and shairport-sync with it
+- Also clean up stale Avahi PID and socket files in `init-avahi` for the same reason
+
 ## 1.1.7
 
 - Add `NET_ADMIN` capability — required for nqptp PTP multicast operations (AirPlay 2 timing sync)
