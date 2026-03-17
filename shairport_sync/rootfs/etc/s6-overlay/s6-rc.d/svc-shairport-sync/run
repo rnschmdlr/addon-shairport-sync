@@ -68,12 +68,21 @@ until [[ -S /var/run/avahi-daemon/socket ]]; do
 done
 
 # ---------------------------------------------------------------------------
-# Wait for nqptp to be ready (creates /tmp/nqptp socket when initialised)
+# Wait for nqptp to be ready (creates /dev/shm/nqptp shared memory segment)
 # ---------------------------------------------------------------------------
 bashio::log.info "Waiting for nqptp to be ready..."
-until [[ -S /tmp/nqptp ]]; do
-    sleep 0.5
+declare -i nqptp_wait=0
+until [[ -f /dev/shm/nqptp ]]; do
+    if [[ ${nqptp_wait} -ge 30 ]]; then
+        bashio::log.warning "nqptp did not become ready after 30 seconds — AirPlay 2 may not work"
+        break
+    fi
+    sleep 1
+    nqptp_wait+=1
 done
+if [[ -f /dev/shm/nqptp ]]; then
+    bashio::log.info "nqptp is ready"
+fi
 
 # ---------------------------------------------------------------------------
 # Start Shairport Sync

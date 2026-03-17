@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.9
+
+- Fix nqptp readiness check: nqptp uses POSIX shared memory (`/dev/shm/nqptp`), not a Unix socket — the wrong path caused shairport-sync to hang indefinitely waiting for nqptp, which is why AirPlay 2 never announced itself and the finish script timed out
+- Add 30-second timeout with warning so startup never hangs silently again
+
 ## 1.1.8
 
 - Fix restart loop: clean up stale `/run/dbus/dbus.pid` in `init-dbus` before starting D-Bus — an ungraceful shutdown (finish script SIGKILL) left this file behind, causing D-Bus to refuse to start on the next attempt, taking down Avahi and shairport-sync with it
