@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.3
+
+- Fix: actually select the PulseAudio backend — `pa = {}` section only configures it, `output_backend = "pa"` in general is required to activate it; without this shairport-sync silently fell back to ALSA
+
 ## 1.2.2
 
 - Fix ALSA XRUN loop: switch audio backend from ALSA (routed through alsa-plugins-pulse) to the native PulseAudio backend — the double-buffering through alsa-plugins-pulse caused the CPU scheduler to miss write windows on a loaded Pi 4, producing "SND_PCM_STATE_XRUN prior to writing" → resync → repeat

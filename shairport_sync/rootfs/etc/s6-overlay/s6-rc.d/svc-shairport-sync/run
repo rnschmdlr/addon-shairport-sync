@@ -20,6 +20,7 @@ else
     {
         printf 'general = {\n'
         printf '  name = "%s";\n' "$(bashio::config 'airplay_name')"
+        printf '  output_backend = "pa";\n'
         printf '  interpolation = "%s";\n' "$(bashio::config 'interpolation')"
         printf '  volume_control_profile = "%s";\n' "$(bashio::config 'volume_control_profile')"
         printf '  log_verbosity = %s;\n' "$(bashio::config 'log_verbosity')"
