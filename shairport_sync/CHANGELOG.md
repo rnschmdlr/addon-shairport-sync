@@ -2,6 +2,10 @@
 
 ## 1.2.3
 
+Fix: actually select the PulseAudio backend
+
+## 1.2.3
+
 - Fix: actually select the PulseAudio backend — `pa = {}` section only configures it, `output_backend = "pa"` in general is required to activate it; without this shairport-sync silently fell back to ALSA
 
 ## 1.2.2
